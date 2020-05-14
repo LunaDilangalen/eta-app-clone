@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang=en>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>location</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+
+
+        var skey;
+        var markers = [];
+        var map = L.map('map').setView([14.644141, 121.037430], 13);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            // TODO: Change access key
+            accessToken: 'pk.eyJ1IjoibW9kZXJuY29tcHV0aW5nIiwiYSI6ImNqdnZ0NWxjZjBmOTc0OXFzeTM2ZmhiejkifQ.gpi2Bdci-JwQYKxzO7HwUA'
+        }).addTo(map);
+
+        var moving_object;
+        function update_position() {
+          $.getJSON("{{json_url_resource}}", function(data) {
+            var longitude = data[0]["geojson"]['coordinates'][0];
+            var latitude = data[0]["geojson"]['coordinates'][1];
+            if (!moving_object) {
+              moving_object = L.marker([latitude,longitude]).bindPopup("Object: {{object_id}}").addTo(map);
+            }
+            moving_object.setLatLng([latitude,longitude]).update();
+            setTimeout(update_position, 1000);
+          });
+          }
+
+        update_position();
+
+    </script>
+
+</body>
+
+</html>

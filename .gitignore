@@ -1,0 +1,43 @@
+__pycache__/
+__pycache__/*
+__pycache__
+venv/
+
+# OS X metafile
+.DS_Store
+
+
+*.py[cod]
+*cpython*
+*.pyc
+*$py.class
+
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+
+*.whl
+
+route_test.json
+ikot_route_test.json
+
+./route_test.json
+./ikot_route_test.json
+
+
+# performance logs
+metrics/data/network_computation/*
+metrics/data/network_computation/

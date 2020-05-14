@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="1">
+    <title>Index Page</title>
+  </head>
+  <body>
+    <h1> ETA Application </h1>
+    <h3>You are on segment {{ destination_segment_id }}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>ETA</th>
+          <th>Segment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vehicle, segments, eta_seconds in vehicle_segments_total_travel_time_array %}
+        <tr>
+          <td>{{vehicle.vehicle_id}}</td>
+          <td>{{"{} secs".format(eta_seconds)}}</td>
+          <td>{{ vehicle.segment.segment_id }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
