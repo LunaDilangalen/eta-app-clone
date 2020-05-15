@@ -12,3 +12,4 @@ celery==4.4.1
 kombu==4.6.8
 redis==3.4.1
 mongoengine==0.20.0
+honcho==1.0.1
