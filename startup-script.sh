@@ -36,7 +36,7 @@ useradd -m -d /home/pythonapp pythonapp
 
 # Fetch source code
 export HOME=/root
-git clone https://github.com/LunaDilangalen/eta-app-clone.git /opt/app
+git clone https://LunaDilangalen:ihatecoding01@github.com/LunaDilangalen/eta-app-clone.git /opt/app
 
 # Python environment setup
 virtualenv -p python3 /opt/app/env
