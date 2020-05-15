@@ -33,7 +33,6 @@ sdist/
 *.whl
 
 route_test.json
-ikot_route_test.json
 
 ./route_test.json
 ./ikot_route_test.json
