@@ -107,7 +107,7 @@ def update_segment(segment_id):
                 previous_segment = vehicle_segment_data.segment
                 segments_traveled = segment.segment_id - previous_segment.segment_id
 
-                print(new_vehicle_location_datetime, old_vehicle_location_datetime, new_vehicle_location_datetime-old_vehicle_location_datetime, zombie_threshhold_timedelta)
+                # print(new_vehicle_location_datetime, old_vehicle_location_datetime, new_vehicle_location_datetime-old_vehicle_location_datetime, zombie_threshhold_timedelta)
 
                 if segments_traveled < 0:
                     segments_traveled = len(models.Segment.objects.all()) + segments_traveled
@@ -144,11 +144,11 @@ def update_all_segments_time():
         update_segment(segment.segment_id)
 
 def debug(counter):
-    print(' ---- UPDATE %d ---- ' %(counter))
+    # print(' ---- UPDATE %d ---- ' %(counter))
     TTT = []
     for segment in models.Segment.objects.all():
         TTT.append(segment.running_average_travel_time)
-    print(TTT)
+    # print(TTT)
 
 def continuous_update():
     update_count = 1

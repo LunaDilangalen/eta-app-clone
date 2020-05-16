@@ -26,7 +26,7 @@ apt-get install -yq git supervisor python python-pip
 pip install --upgrade pip virtualenv
 
 # Install mongodb
-sudo apt-get install mongodb
+sudo apt-get -yq install mongodb
 sudo service mongodb stop
 sudo mkdir $HOME/db
 sudo mongod --dbpath $HOME/db --port 80 --fork --logpath /var/tmp/mongodb
