@@ -27,7 +27,6 @@ pip install --upgrade pip virtualenv
 
 # Install mongodb
 sudo apt-get -yq install mongodb
-sudo service mongodb stop
 sudo mkdir $HOME/db
 sudo mongod --dbpath $HOME/db --port 80 --fork --logpath /var/tmp/mongodb
 
@@ -48,6 +47,9 @@ chown -R pythonapp:pythonapp /opt/app
 
 # Put supervisor configuration in proper place
 cp /opt/app/python-app.conf /etc/supervisor/conf.d/python-app.conf
+
+# change directory into app files
+cd /opt/app 
 
 # Start service via supervisorctl
 supervisorctl reread
