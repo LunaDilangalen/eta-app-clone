@@ -39,5 +39,5 @@ route_test.json
 
 
 # performance logs
-metrics/data/network_computation/*
-metrics/data/network_computation/
+# metrics/data/network_computation/*
+# metrics/data/network_computation/
