@@ -68,8 +68,8 @@ def update_segment(segment_id):
         )
 
         _network_time_end = time.perf_counter()
-        with open(Path(str(update_segment_folder),"network.csv"), "a") as log_file:
-            log_file.write("{},{},{},{},{},{}\n".format(_network_time_end - _network_time_start, segment_id, (segment.length / 2), 15, models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
+        # with open(Path(str(update_segment_folder),"network.csv"), "a") as log_file:
+        #     log_file.write("{},{},{},{},{},{}\n".format(_network_time_end - _network_time_start, segment_id, (segment.length / 2), 15, models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
 
         # Initialize zombie_threshhold_timedelta
         zombie_threshhold_timedelta = datetime.timedelta(minutes=config['ZOMBIE_THRESHOLD_TIMEDELTA'])
@@ -136,8 +136,8 @@ def update_segment(segment_id):
                                 segment_to_update.update(running_average_travel_time=travel_time_per_segment)
 
         end_time = time.perf_counter()
-        with open(Path(str(update_segment_folder),"total.csv"), "a") as log_file:
-            log_file.write("{},{},{},{},{},{}\n".format(end_time - start_time, segment_id, (segment.length / 2), 15, len(latest_area_data), models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
+        # with open(Path(str(update_segment_folder),"total.csv"), "a") as log_file:
+        #     log_file.write("{},{},{},{},{},{}\n".format(end_time - start_time, segment_id, (segment.length / 2), 15, len(latest_area_data), models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
 
 def update_all_segments_time():
     for segment in models.Segment.objects.all():
