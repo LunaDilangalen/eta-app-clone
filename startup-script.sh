@@ -48,10 +48,8 @@ chown -R pythonapp:pythonapp /opt/app
 # Put supervisor configuration in proper place
 cp /opt/app/python-app.conf /etc/supervisor/conf.d/python-app.conf
 
-# change directory into app files
-cd /opt/app 
 
 # Start service via supervisorctl
-supervisorctl reread
-supervisorctl update
+sudo supervisorctl reread
+sudo supervisorctl update
 # [END getting_started_gce_startup_script]
