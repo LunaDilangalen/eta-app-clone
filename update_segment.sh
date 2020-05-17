@@ -1,2 +1,1 @@
-cd eta_app/
-python segment_watcher.py &
+python eta_app/segment_watcher.py &
