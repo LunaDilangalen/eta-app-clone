@@ -66,6 +66,7 @@ def get_vehicle_eta_total_travel_time_from_dest_segment(app, destination_segment
             cumulative_segments_to_cross.append(cursor_segment)
 
             for v, distance, closeness in sorted_vehicles:
+                print('threshold: ', zombie_threshhold_timedelta, 'vehicle: ', v.vehicle_datetime, 'now: ',dt.datetime.now());
                 if zombie_threshhold_timedelta is None:
                     vehicle_segments_total_travel_time_array.append( (v,cumulative_segments_to_cross, cumulative_travel_time + (cursor_segment.running_average_travel_time * closeness)) )
                 elif (zombie_threshhold_timedelta is not None) and ((v.vehicle_datetime + zombie_threshhold_timedelta) > dt.datetime.now()):

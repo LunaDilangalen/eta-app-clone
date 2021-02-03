@@ -2,13 +2,14 @@ from threading import Thread
 from haversine import haversine
 import pandas as pd
 import numpy as np
-import datetime, urllib3, json, time, pytz, requests, csv
+import datetime, urllib3, json, time, pytz, requests, csv, os
 from math import floor, ceil
 from statistics import mean
 from . import helper
 
+
 # with open("route_test.json", "r") as read_file:
-with open("ikot_route_test.json", "r") as read_file:
+with open(os.path.join(os.getcwd(),"ikot_route_test.json"), "r") as read_file:
     route_data = json.load(read_file)
 
 # returns the index of the of the route segment nearest to the given location coordinates
@@ -25,6 +26,22 @@ def locate_segment(coordinates, route = route_data):
 
     # print(car_segment)
     return car_segment
+
+# does what locate_segment does using route/segment models in database
+def new_locate_segment(app, coordinates):
+    route = app.models.Segment.objects.all();
+    segment_distances = []
+
+    for segment in route:
+        midpoint_lonlat = segment.midpoint['coordinates']
+        midpoint_latlon = (midpoint_lonlat[1], midpoint_lonlat[0])
+        distance = haversine(coordinates, midpoint_latlon)
+        segment_distances.append(distance)
+        # print(segment.segment_id, ':', midpoint_lonlat, ':', distance)
+
+    nearest_segment = segment_distances.index(min(segment_distances))
+    # print('nearest segment: ', nearest_segment)
+    return nearest_segment
 
 # returns the total distance covered from the start segment to the destination segment
 def compute_total_distance(route, start_segment, end_segment):

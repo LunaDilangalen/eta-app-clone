@@ -2,7 +2,6 @@ __pycache__/
 __pycache__/*
 __pycache__
 venv/
-env/
 
 # OS X metafile
 .DS_Store
@@ -33,11 +32,12 @@ sdist/
 *.whl
 
 route_test.json
+ikot_route_test.json
 
 ./route_test.json
 ./ikot_route_test.json
 
 
 # performance logs
-# metrics/data/network_computation/*
-# metrics/data/network_computation/
+metrics/data/network_computation/*
+metrics/data/network_computation/

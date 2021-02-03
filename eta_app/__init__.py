@@ -66,10 +66,10 @@ def create_app(test_config=None):
 
         # eta_seconds == 0 will not really evaluate to True --> should implement a tolerance check.
         visual_array = [ (vehicle, segments, "Vehicle has arrived!") if eta_seconds == 0 else (vehicle, segments, eta_seconds) for vehicle, segments, eta_seconds in vehicle_segments_total_travel_time_array]
-        destination_segment_id = compute_eta.locate_segment(coordinates=normal_format_destination)
+        destination_segment_id = compute_eta.new_locate_segment(app, normal_format_destination)
 
         end_time = time.perf_counter()
-        with open("metrics/data/network_computation/generic_eta/computation.csv", "a") as log_file:
+        with open(os.path.join(os.getcwd(),"metrics/data/network_computation/generic_eta/computation.csv"), "a") as log_file:
             log_file.write("{},{},{},{}\n".format(end_time - start_time, max_number_of_puvs, app.models.Segment.objects.count(), app.models.VehicleSegmentData.objects.count()))
 
         return render_template('generic_eta.html', vehicle_segments_total_travel_time_array=visual_array, destination_segment_id=destination_segment_id)
@@ -94,10 +94,10 @@ def create_app(test_config=None):
         zombie_threshhold_timedelta=app.config['DEFAULT_ZOMBIE_TIMEDELTA']
         )
 
-        destination_segment_id = compute_eta.locate_segment(coordinates=normal_format_destination)
+        destination_segment_id = compute_eta.new_locate_segment(app, normal_format_destination)
 
         end_time = time.perf_counter()
-        with open("metrics/data/network_computation/generic_eta/computation.csv", "a") as log_file:
+        with open(os.path.join(os.getcwd(),"metrics/data/network_computation/generic_eta/computation.csv"), "a") as log_file:
             log_file.write("{},{},{},{}\n".format(end_time - start_time, max_number_of_puvs, app.models.Segment.objects.count(), app.models.VehicleSegmentData.objects.count()))
 
         ret_json = []
@@ -125,4 +125,14 @@ def create_app(test_config=None):
         rest_operation = '/latest_location?id='
         complete_URL = base_url + rest_operation + str(top3_puv_ids[2])
         return render_template('eta_visual.html', ids=top3_puv_ids, json_url_resource3=complete_URL)
+
+    @app.route('/new_locate_segment')
+    def new_locate_segment():
+        lat = float(request.args.get('lat'))
+        lon = float(request.args.get('lon'))
+        coordinates = (lat, lon)
+        print('HELLO')
+        compute_eta.new_locate_segment(app, coordinates)
+
+        return render_template('index.html')
     return app

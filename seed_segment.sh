@@ -1,3 +1,6 @@
-# seed segment db 
+# seed segment db
+cd /opt/app/
 export FLASK_APP=eta_app
-flask seed-segment-db ikot
+env/bin/flask init-perf-logs
+env/bin/flask seed-segment-db ikot
+cd

@@ -1,4 +1,10 @@
-# from . import models
+"""
+Usage:
+$ python segment_watcher.py
+- initializes segment_watcher and continuously updates ETA_APP's
+  database from NIMPA's PUV traffic data
+"""
+
 import models
 import mongoengine as me
 
@@ -38,9 +44,13 @@ me_connection = me.register_connection(db=config['MONGODB_DB_NAME'], alias=confi
 
 models = models.init_models(config)
 
-current_folder = Path(os.getcwd())
-outer_folder = current_folder.parent
-update_segment_folder = Path(str(outer_folder), "metrics/data/network_computation/update_segment")
+# current_folder = Path(os.getcwd())
+# outer_folder = current_folder.parent
+# update_segment_folder = Path(str(outer_folder), "metrics/data/network_computation/update_segment")
+
+app_directory = os.getcwd()
+update_segment_folder = os.path.join(app_directory, 'metrics/data/network_computation/update_segment')
+# print(update_segment_folder)
 
 
 # Updates a Segment (given seg_id) in the database from traffic data in NIMPA
@@ -53,6 +63,7 @@ def update_segment(segment_id):
     start_time = time.perf_counter()
 
     segment = models.Segment.objects(segment_id=segment_id).first()
+
     if segment is None:
         raise Exception("update_segment: unable to find Segment with segment_id <{}>".format(segment_id))
     else:
@@ -68,8 +79,11 @@ def update_segment(segment_id):
         )
 
         _network_time_end = time.perf_counter()
-        # with open(Path(str(update_segment_folder),"network.csv"), "a") as log_file:
-        #     log_file.write("{},{},{},{},{},{}\n".format(_network_time_end - _network_time_start, segment_id, (segment.length / 2), 15, models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
+        with open(os.path.join(update_segment_folder,"network.csv"), "a") as log_file:
+            log_file.write("{},{},{},{},{},{}\n".format(_network_time_end - _network_time_start, segment_id, (segment.length / 2), 15, models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
+
+        _network_time = _network_time_end - _network_time_start
+
 
         # Initialize zombie_threshhold_timedelta
         zombie_threshhold_timedelta = datetime.timedelta(minutes=config['ZOMBIE_THRESHOLD_TIMEDELTA'])
@@ -136,8 +150,14 @@ def update_segment(segment_id):
                                 segment_to_update.update(running_average_travel_time=travel_time_per_segment)
 
         end_time = time.perf_counter()
-        # with open(Path(str(update_segment_folder),"total.csv"), "a") as log_file:
-        #     log_file.write("{},{},{},{},{},{}\n".format(end_time - start_time, segment_id, (segment.length / 2), 15, len(latest_area_data), models.VehicleSegmentData.objects.count(),models.Segment.objects.count()))
+        with open(os.path.join(update_segment_folder,"total.csv"), "a") as log_file:
+            log_file.write("{},{},{},{},{},{},{}\n".format(end_time - start_time, segment_id, (segment.length / 2), 15, len(latest_area_data), models.VehicleSegmentData.objects.count(), models.Segment.objects.count()))
+
+        _total_time = end_time - start_time
+
+        with open(os.path.join(update_segment_folder,"computation.csv"), "a") as log_file:
+            log_file.write("{},{},{},{},{},{},{}\n".format(_total_time - _network_time, segment_id, (segment.length / 2), 15, len(latest_area_data), models.VehicleSegmentData.objects.count(), models.Segment.objects.count()))
+
 
 def update_all_segments_time():
     for segment in models.Segment.objects.all():

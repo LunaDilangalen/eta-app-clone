@@ -4,6 +4,15 @@ import matplotlib.dates as md
 import numpy as np
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
 import os
+import matplotlib
+
+# matplotlib.use("pgf")
+# matplotlib.rcParams.update({
+#     "pgf.texsystem": "pdflatex",
+#     'font.family': 'serif',
+#     'text.usetex': True,
+#     'pgf.rcfonts': False,
+# })
 
 local_tz = pytz.timezone('Asia/Manila')
 
